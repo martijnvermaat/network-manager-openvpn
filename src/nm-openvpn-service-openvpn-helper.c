@@ -629,13 +629,12 @@ main (int argc, char *argv[])
 	if (tmp && inet_pton (AF_INET, tmp, &temp_addr) > 0) {
 		val = g_variant_new_uint32 (nm_utils_ip4_netmask_to_prefix (temp_addr.s_addr));
 		g_variant_builder_add (&ip4builder, "{sv}", NM_VPN_PLUGIN_IP4_CONFIG_PREFIX, val);
-	} else if (!tapdev) {
+	} else {
 		if (has_ip4_address && !has_ip4_prefix) {
 			val = g_variant_new_uint32 (32);
 			g_variant_builder_add (&ip4builder, "{sv}", NM_VPN_PLUGIN_IP4_CONFIG_PREFIX, val);
 		}
-	} else
-		_LOGW ("No IP4 netmask/prefix (missing or invalid 'ifconfig_netmask')");
+	}
 
 	val = get_ip4_routes ();
 	if (val)
